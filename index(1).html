@@ -1,0 +1,38 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>For Fatima</title>
+<style>
+html,body{margin:0;height:100%;overflow:hidden;background:linear-gradient(#fde3ef,#eaf5ff);font-family:Georgia}
+canvas{position:fixed;inset:0}
+.card{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:#ffffffbb;padding:28px;border-radius:24px;max-width:700px;text-align:center}
+h1{font-size:64px;color:#c34b7b;margin:0}
+button{padding:10px 18px;border-radius:20px;border:0;background:#c34b7b;color:#fff}
+#msg{display:none}
+</style></head><body><canvas id=c></canvas><div class=card><h1>Fatima</h1><button onclick="msg.style.display='block';this.remove()">Open My Heart ❤️</button><div id=msg><p>From the moment you came into my life, everything became brighter. Like these flowers, my love for you continues to bloom every day. No matter where life takes us, you'll always have a special place in my heart.</p><p>Every petal on this page represents a reason I'm grateful for you. Thank you for your kindness, your smile, and for simply being you.</p><b>Forever and always,<br>Love, Daiyaan ❤️</b></div></div>
+<script>
+const cv=c,ctx=cv.getContext('2d');function rs(){cv.width=innerWidth;cv.height=innerHeight}onresize=rs;rs();
+const spots=[[140,150],[innerWidth-160,170],[170,innerHeight-150],[innerWidth-170,innerHeight-150],[innerWidth/2,120],[120,innerHeight/2],[innerWidth-120,innerHeight/2]];
+const flowers=spots.map((s,i)=>({x:s[0],y:s[1],t:i*35}));
+const petals=[...Array(180)].map(()=>({x:Math.random()*cv.width,y:Math.random()*cv.height,s:1+Math.random()*2,r:2+Math.random()*4}));
+let frame=0;
+function bloom(f){
+ let prog=Math.max(0,Math.min(1,(frame-f.t)/60));
+ for(let ring=0;ring<3;ring++){
+  let n=10+ring*4,rad=(14+ring*12)*prog;
+  for(let i=0;i<n;i++){
+   let a=i*Math.PI*2/n;
+   ctx.fillStyle=ring==2?"#8fc8ff":"#f59bc0";
+   ctx.beginPath();
+   ctx.ellipse(f.x+Math.cos(a)*rad,f.y+Math.sin(a)*rad,10*prog,6*prog,a,0,7);
+   ctx.fill();
+  }
+ }
+ ctx.fillStyle="#ffd54d";ctx.beginPath();ctx.arc(f.x,f.y,7*prog,0,7);ctx.fill();
+}
+(function anim(){
+frame++;
+ctx.clearRect(0,0,cv.width,cv.height);
+flowers.forEach(bloom);
+ctx.fillStyle="rgba(255,182,193,.75)";
+petals.forEach(p=>{ctx.beginPath();ctx.ellipse(p.x,p.y,p.r,p.r*.6,0,0,7);ctx.fill();p.y+=p.s;p.x+=Math.sin(p.y/35);if(p.y>cv.height){p.y=-10;p.x=Math.random()*cv.width;}});
+requestAnimationFrame(anim);
+})();
+</script></body></html>
